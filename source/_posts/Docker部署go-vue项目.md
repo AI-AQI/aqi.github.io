@@ -27,6 +27,8 @@ docker run -p 3307:3306 --name mysql -v /mysql_data:/var/lib/mysql -e MYSQL_ROOT
 # -p 3307:3306	表示宿主机开放的mysql端口为3307，容器内mysql端口为3306
 ```
 
+<!--more-->
+
 ### ⭐启动后端
 
 ##### 1. 构建镜像
