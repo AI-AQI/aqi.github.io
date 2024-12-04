@@ -1,41 +1,514 @@
-extends partial/layout
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-include mixins
+<link rel="stylesheet" href="/css/main.css">
 
-block site_title
-  != page.title + " · " + config.title
 
-block description
-  - var desc = page.desc || strip_html(page.content).replace(/^\s*/, "").replace(/\s*$/, "").substring(0, 150);
-  meta(name="description", content=desc)
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-block content
-  .autopagerize_page_element: .content: .post-page
-    include mixins
-    +make_post(page, true)
-    .share
-      - var twitter_text = encodeURI(__("Share_text") + "\n\n" + config.title + " · " + page.title + "\n" + config.url + "/" + page.path + "\n");
-      .share-btn.linkonly
-        a.fa.fa-link(onclick="Utils.copyToClipboard(window.location.href)", ref="sidebar")
-      .share-btn.evernote
-        a.fa.fa-share(onclick="Anatolo.share.native()", ref="sidebar")
-      .share-btn.weibo
-        a.fab.fa-weibo(
-          href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"
-        )
-      .share-btn.twitter
-        a.fab.fa-twitter(href=url_for("http://twitter.com/intent/tweet?text=" + twitter_text))
-      .share-btn.mastodon
-        a.fab.fa-mastodon(href=url_for("https://mastodonshare.com/?text=" + twitter_text))
-    - var prev = page.prev ? page.prev.path : false;
-    - var next = page.next ? page.next.path : false;
-    .pagination
-      ul.clearfix
-        if prev
-          li.pre.pagbuttons
-            a.btn(role="navigation", href=url_for(prev), title=page.prev.title)!= __("prev_post")
-        if next
-          li.next.pagbuttons
-            a.btn(role="navigation", href=url_for(next), title=page.next.title)!= __("next_post")
-    include partial/comments
-    +make_comments
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ai-aqi.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="⭐搭建博客创建仓库 远程仓库并增加hexo分支  1GithubUsername.github.io  &#x2F;&#x2F; 仓库名称第一部分用github的用户名，后面固定为github.io   创建本地仓库  1mkdir GithubUsername.github.io">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github和Hexo搭建博客">
+<meta property="og:url" content="https://ai-aqi.github.io/2024/08/08/Github%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="Aqi&#39;s Blog">
+<meta property="og:description" content="⭐搭建博客创建仓库 远程仓库并增加hexo分支  1GithubUsername.github.io  &#x2F;&#x2F; 仓库名称第一部分用github的用户名，后面固定为github.io   创建本地仓库  1mkdir GithubUsername.github.io">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ai-aqi.github.io/images/1723794212487.png">
+<meta property="article:published_time" content="2024-08-08T08:21:17.000Z">
+<meta property="article:modified_time" content="2024-12-04T07:44:48.744Z">
+<meta property="article:author" content="Aqi">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ai-aqi.github.io/images/1723794212487.png">
+
+<link rel="canonical" href="https://ai-aqi.github.io/2024/08/08/Github%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Github和Hexo搭建博客 | Aqi's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Aqi's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">yeah yeah~ oh oh oh~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ai-aqi.github.io/2024/08/08/Github%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aqi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aqi's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Github和Hexo搭建博客
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-08-08 16:21:17" itemprop="dateCreated datePublished" datetime="2024-08-08T16:21:17+08:00">2024-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-04 15:44:48" itemprop="dateModified" datetime="2024-12-04T15:44:48+08:00">2024-12-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="⭐搭建博客"><a href="#⭐搭建博客" class="headerlink" title="⭐搭建博客"></a>⭐搭建博客</h3><h4 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h4><ol>
+<li>远程仓库并增加hexo分支</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GithubUsername.github.io  // 仓库名称第一部分用github的用户名，后面固定为github.io</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建本地仓库</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir GithubUsername.github.io</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h4 id="本地仓库初始化"><a href="#本地仓库初始化" class="headerlink" title="本地仓库初始化"></a>本地仓库初始化</h4><ol>
+<li><p>hexo文档：<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">https://hexo.io/zh-cn/docs/</a></p>
+</li>
+<li><p>具体步骤：</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">cd GithubUsername.github.io</span><br><span class="line">hexo init (必须是空目录)</span><br><span class="line"></span><br><span class="line">npm install</span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 使用hexo初始化后目录结构为</span><br><span class="line">|--.gitignore</span><br><span class="line">|--node_modules</span><br><span class="line">|--package-lock.json</span><br><span class="line">|--package.json</span><br><span class="line">|--scaffolds</span><br><span class="line">|--source</span><br><span class="line">|--themes</span><br><span class="line">`--_config.yml</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改本地-config-yml"><a href="#修改本地-config-yml" class="headerlink" title="修改本地_config.yml"></a>修改本地_config.yml</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这部分是网站基础信息</span></span><br><span class="line"><span class="comment"># Site</span></span><br><span class="line"><span class="attr">title:</span> </span><br><span class="line"><span class="attr">subtitle:</span> </span><br><span class="line"><span class="attr">description:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="attr">keywords:</span> </span><br><span class="line"><span class="attr">author:</span> </span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要改成博客的url，否则线上会404</span></span><br><span class="line"><span class="comment">## Set your site url here. For example, if you use GitHub Page, set url as &#x27;https://username.github.io/project&#x27;</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://xxx.github.io/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">git@github.com:xxx/xxx.github.io.git</span> <span class="string">//git远程仓库地址</span> </span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="本地代码同步远程"><a href="#本地代码同步远程" class="headerlink" title="本地代码同步远程"></a>本地代码同步远程</h4><ol>
+<li>连接本地仓库和远程仓库</li>
+</ol>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin git@github.com:xxx/xxx.github.io.git</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>上传代码</li>
+</ol>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add --all</span><br><span class="line">git commit -m &quot;update&quot;</span><br><span class="line">git push origin hexo</span><br></pre></td></tr></table></figure>
+
+<h4 id="远程仓库配置"><a href="#远程仓库配置" class="headerlink" title="远程仓库配置"></a>远程仓库配置</h4><ol>
+<li><p><code>Settings</code> -&gt; <code>General</code>  配置<code>hexo</code>为默认分支</p>
+</li>
+<li><p><code>Settings</code> -&gt; <code>Pages</code> -&gt; <code>Build and deployment</code> -&gt; <code>Source</code> 配置为 <code>Deploy from a branch</code></p>
+</li>
+<li><p><code>Settings</code> -&gt; <code>Pages</code> -&gt; <code>Build and deployment</code> -&gt; <code>Branch</code> 配置为<code>master</code></p>
+</li>
+</ol>
+<h4 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo s 		// 本地启动（调试用）</span><br><span class="line">hexo clean  // 清理缓存</span><br><span class="line">hexo g  	// 生成静态文件</span><br><span class="line">hexo d 		// 部署到github</span><br></pre></td></tr></table></figure>
+
+<p>^_^ 到这里就可以进入博客啦👍</p>
+<p><img src="/images/1723794212487.png" alt="1723794212487"></p>
+<hr>
+<h3 id="⭐更新博客"><a href="#⭐更新博客" class="headerlink" title="⭐更新博客"></a>⭐更新博客</h3><h4 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h4><ol>
+<li>新增文章（文章默认都在<code>source/_posts</code>目录下）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>文章开头内容为</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Github和Hexo搭建博客</span><br><span class="line">date: 2024-08-08 16:21:17</span><br><span class="line">tags: 博客</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><ol>
+<li>手动更新</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git add --all</span><br><span class="line">git commit -m &quot;update&quot;</span><br><span class="line">git push origin hexo</span><br><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>shell文件一键更新</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 写一个shell文件</span></span><br><span class="line">vim deploy.sh</span><br><span class="line"></span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">&quot;update&quot;</span></span><br><span class="line">git push origin hexo</span><br><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br><span class="line"></span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改权限</span></span><br><span class="line"><span class="built_in">chmod</span> +x deploy.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">./deploy.sh</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="⭐丰富博客"><a href="#⭐丰富博客" class="headerlink" title="⭐丰富博客"></a>⭐丰富博客</h3><h4 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h4><ol>
+<li><p>选择主题：<a target="_blank" rel="noopener" href="https://hexo.io/themes/index.html">https://hexo.io/themes/index.html</a> </p>
+</li>
+<li><p>配置主题</p>
+</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在根目录下 拉取主题代码到theme文件夹</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改根目录的_config.yml的theme字段为刚拉取的文件名</span></span><br><span class="line">vim _config.yml</span><br><span class="line"></span><br><span class="line">-------------</span><br><span class="line">theme: next</span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>其他主题配置项可以在<code>themes/next/_config.yml</code>里自定义</li>
+</ol>
+<h4 id="新建分类-标签"><a href="#新建分类-标签" class="headerlink" title="新建分类&#x2F;标签"></a>新建分类&#x2F;标签</h4><ol>
+<li>新建分类&#x2F;标签页面</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建分类页</span></span><br><span class="line">hexo new page categories</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据返回提示打开source/categories/index.md 增加：</span></span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line">title: categories</span><br><span class="line"><span class="built_in">date</span>: 2024-08-09 10:51:27</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&quot;categories&quot;</span> </span><br><span class="line"></span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建标签页</span></span><br><span class="line">hexo new page tags</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据返回提示打开source/tags/index.md 增加：</span></span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line">title: tags</span><br><span class="line"><span class="built_in">date</span>: 2024-08-09 10:51:34</span><br><span class="line"><span class="built_in">type</span>: <span class="string">&quot;tags&quot;</span></span><br><span class="line"></span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置路径</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑next主题下的_config.yml文件</span></span><br><span class="line">vim themes/next/_config.yml</span><br><span class="line"></span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line">menu:</span><br><span class="line">  home: / || fa fa-home</span><br><span class="line">  <span class="comment">#about: /about/ || fa fa-user</span></span><br><span class="line">  tags: /tags/ || fa fa-tags</span><br><span class="line">  categories: /categories/ || fa fa-th</span><br><span class="line">  archives: /archives/ || fa fa-archive</span><br><span class="line">  <span class="comment">#schedule: /schedule/ || fa fa-calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || fa fa-sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || fa fa-heartbeat</span></span><br><span class="line">  </span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>给文章设置分类&#x2F;标签</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在文章开头增加tags/categories</span></span><br><span class="line">-------------</span><br><span class="line"></span><br><span class="line">title: Github和Hexo搭建博客</span><br><span class="line"><span class="built_in">date</span>: 2024-08-08 16:21:17</span><br><span class="line">tags: 标签1</span><br><span class="line">categories: 分类1</span><br><span class="line"></span><br><span class="line">-------------</span><br></pre></td></tr></table></figure>
+
+<h4 id="文章内容"><a href="#文章内容" class="headerlink" title="文章内容"></a>文章内容</h4><h5 id="1-“阅读全文”按钮"><a href="#1-“阅读全文”按钮" class="headerlink" title="1. “阅读全文”按钮"></a>1. “阅读全文”按钮</h5><p>在文章内增加<code>&lt;!--more--&gt;</code></p>
+<h5 id="2-文章中添加图片"><a href="#2-文章中添加图片" class="headerlink" title="2. 文章中添加图片"></a>2. 文章中添加图片</h5><h6 id="全局资源"><a href="#全局资源" class="headerlink" title="全局资源"></a>全局资源</h6><ol>
+<li><p>source目录下新建images目录，图片放到images文件夹中</p>
+</li>
+<li><p>文章中使用图片格式为<code>![1723794212487](/images/1723794212487.png)</code></p>
+</li>
+</ol>
+<h6 id="文章资源"><a href="#文章资源" class="headerlink" title="文章资源"></a>文章资源</h6><p>见官网 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders">https://hexo.io/zh-cn/docs/asset-folders</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"># 博客</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/08/16/Docker%E9%83%A8%E7%BD%B2go-vue%E9%A1%B9%E7%9B%AE/" rel="next" title="Docker部署go+vue项目">
+      Docker部署go+vue项目 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="nav-number">1.</span> <span class="nav-text">⭐搭建博客</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="nav-number">1.1.</span> <span class="nav-text">创建仓库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">本地仓库初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%9C%AC%E5%9C%B0-config-yml"><span class="nav-number">1.3.</span> <span class="nav-text">修改本地_config.yml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%A0%81%E5%90%8C%E6%AD%A5%E8%BF%9C%E7%A8%8B"><span class="nav-number">1.4.</span> <span class="nav-text">本地代码同步远程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.</span> <span class="nav-text">远程仓库配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2"><span class="nav-number">1.6.</span> <span class="nav-text">部署</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2"><span class="nav-number">2.</span> <span class="nav-text">⭐更新博客</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E6%96%87%E7%AB%A0"><span class="nav-number">2.1.</span> <span class="nav-text">新建文章</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number">2.2.</span> <span class="nav-text">更新</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%AD%90%E4%B8%B0%E5%AF%8C%E5%8D%9A%E5%AE%A2"><span class="nav-number">3.</span> <span class="nav-text">⭐丰富博客</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%8D%A2%E4%B8%BB%E9%A2%98"><span class="nav-number">3.1.</span> <span class="nav-text">更换主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E5%88%86%E7%B1%BB-%E6%A0%87%E7%AD%BE"><span class="nav-number">3.2.</span> <span class="nav-text">新建分类&#x2F;标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E5%86%85%E5%AE%B9"><span class="nav-number">3.3.</span> <span class="nav-text">文章内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E2%80%9C%E9%98%85%E8%AF%BB%E5%85%A8%E6%96%87%E2%80%9D%E6%8C%89%E9%92%AE"><span class="nav-number">3.3.1.</span> <span class="nav-text">1. “阅读全文”按钮</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E6%96%87%E7%AB%A0%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%9B%BE%E7%89%87"><span class="nav-number">3.3.2.</span> <span class="nav-text">2. 文章中添加图片</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E8%B5%84%E6%BA%90"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">全局资源</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E8%B5%84%E6%BA%90"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">文章资源</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aqi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/AI-AQI" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;AI-AQI" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aqi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
