@@ -1,10 +1,9 @@
 ---
 
-title: git
+title: Git命令
 date: 2024-12-04 16:37:25
 tags:
-categories:
-- 工作技术记录
+categories: 工作技术记录
 ---
 
 ##### Git global setup
