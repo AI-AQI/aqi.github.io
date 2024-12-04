@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ai-aqi.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Git global setup12# 生成公钥ssh-keygen -t rsa  123456# 配置用户和邮箱git config --global user.name &quot;dev&quot;git config --global user.email &quot;&quot;# --local	对当前仓库有效# --global	全局范围设置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git">
+<meta property="og:url" content="https://ai-aqi.github.io/2024/12/04/Git%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Aqi&#39;s Blog">
+<meta property="og:description" content="Git global setup12# 生成公钥ssh-keygen -t rsa  123456# 配置用户和邮箱git config --global user.name &quot;dev&quot;git config --global user.email &quot;&quot;# --local	对当前仓库有效# --global	全局范围设置">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-04T08:37:25.000Z">
+<meta property="article:modified_time" content="2024-12-04T08:46:34.726Z">
+<meta property="article:author" content="Aqi">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://ai-aqi.github.io/2024/12/04/Git%E5%91%BD%E4%BB%A4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>git | Aqi's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Aqi's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">yeah yeah~ oh oh oh~</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ai-aqi.github.io/2024/12/04/Git%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aqi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aqi's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          git
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-12-04 16:37:25 / 修改时间：16:46:34" itemprop="dateCreated datePublished" datetime="2024-12-04T16:37:25+08:00">2024-12-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">工作技术记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h5 id="Git-global-setup"><a href="#Git-global-setup" class="headerlink" title="Git global setup"></a>Git global setup</h5><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 生成公钥</span><br><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 配置用户和邮箱</span><br><span class="line">git config --global user.name &quot;dev&quot;</span><br><span class="line">git config --global user.email &quot;&quot;</span><br><span class="line"></span><br><span class="line"># --local	对当前仓库有效</span><br><span class="line"># --global	全局范围设置</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h5 id="Create-a-new-repository"><a href="#Create-a-new-repository" class="headerlink" title="Create a new repository"></a>Create a new repository</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git clone 远程git仓库地址  （git@gitlab.xxx.net:dev/test.git）</span><br><span class="line"><span class="comment"># 克隆时指定目录名</span></span><br><span class="line">git clone 远程git仓库地址 目录名  （git clone git@gitlab.xxx.net:dev/test.git Test）</span><br><span class="line"><span class="comment"># 使用dev分支</span></span><br><span class="line">git checkout -b test origin/dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建分支并上传远程</span></span><br><span class="line">git checkout -b dev</span><br><span class="line">git push origin dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传文件</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line">git push -u origin dev</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="Existing-folder"><a href="#Existing-folder" class="headerlink" title="Existing folder"></a>Existing folder</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd existing_folder</span><br><span class="line"></span><br><span class="line">git init</span><br><span class="line">git remote add origin 远程git仓库地址  （git@gitlab.dev.tulong.net:dev/test.git）</span><br><span class="line"></span><br><span class="line"><span class="comment"># 填写忽略文件</span></span><br><span class="line">vim .gitignore </span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line">git commit</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建分支并上传远程</span></span><br><span class="line">git checkout -b dev</span><br><span class="line">git push origin dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用远程上其他人的分支</span></span><br><span class="line"><span class="comment"># 在master分支</span></span><br><span class="line">git fetch origin</span><br><span class="line">git checkout -b password origin/password</span><br><span class="line"></span><br><span class="line"><span class="comment"># merge request之前进行rebase</span></span><br><span class="line"><span class="comment"># 在dev分支</span></span><br><span class="line">git fetch      <span class="string">&#x27;相当于git pull 但是会在合并之前判断是否可以pull&#x27;</span></span><br><span class="line">git rebase origin/master   </span><br><span class="line">git push -f origin dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回退版本</span></span><br><span class="line">git log   </span><br><span class="line">git reset --hard 6158a46839b43(版本号)</span><br><span class="line">git push -f / git push -f --<span class="built_in">set</span>-upstream origin dev</span><br><span class="line"><span class="string">&#x27;--set-upstream 本地关联远程分支&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程和本地分支</span></span><br><span class="line">git checkout master <span class="string">&#x27;切换到master分支&#x27;</span></span><br><span class="line">git branch -a     </span><br><span class="line">git push origin --delete dev   <span class="string">&#x27;删除远程dev分支&#x27;</span></span><br><span class="line">git branch -D dev  <span class="string">&#x27;删除本地dev分支&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂存本地</span></span><br><span class="line">git stash / git stash save <span class="string">&quot;添加暂存备注&quot;</span></span><br><span class="line">git stash <span class="built_in">list</span>   <span class="string">&#x27;查看暂存版本&#x27;</span></span><br><span class="line">&gt;&gt; 返回示例</span><br><span class="line">stash@&#123;<span class="number">0</span>&#125;: WIP on app-detail: 953b6b3 fix/token check</span><br><span class="line">stash@&#123;<span class="number">1</span>&#125;: WIP on app-detail: 953b6b3 fix/token check</span><br><span class="line">git stash show stash@&#123;<span class="number">0</span>&#125;</span><br><span class="line">git stash apply stash@&#123;<span class="number">0</span>&#125;</span><br><span class="line">git stash drop stash@&#123;<span class="number">0</span>&#125;</span><br><span class="line">git stash pop stash@&#123;<span class="number">0</span>&#125;</span><br><span class="line">git stash clear</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除远程文件</span></span><br><span class="line">git rm -r --cached .idea</span><br><span class="line">git commit -m <span class="string">&#x27;delete&#x27;</span></span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 压缩commit</span></span><br><span class="line">git rebase -i HEAD~<span class="number">7</span> 把顶部的六个版本聚到一起进入编辑页面</span><br></pre></td></tr></table></figure>
+
+<h5 id="Existing-Git-repository"><a href="#Existing-Git-repository" class="headerlink" title="Existing Git repository"></a>Existing Git repository</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd existing_repo</span><br><span class="line"><span class="comment"># 本地仓库关联远程仓库</span></span><br><span class="line">git remote add origin 远程git仓库地址  （git@gitlab.dev.tulong.net:dev/test.git）</span><br><span class="line">git push -u origin --<span class="built_in">all</span></span><br><span class="line">git push -u origin --tags`</span><br></pre></td></tr></table></figure>
+
+<h5 id="add时报错"><a href="#add时报错" class="headerlink" title="add时报错"></a>add时报错</h5><p>git warning: LF will be replaced by CRLF in</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># git init之前</span><br><span class="line">git config --global core.autocrlf false  # 禁用自动转换 </span><br><span class="line">git pull origin master</span><br></pre></td></tr></table></figure>
+
+<p>在使用git pull时,或者切换分支的时候 ，经常会遇到报错: Please move or remove them before you can merge</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 这是因为本地有修改,与云端别人提交的修改冲突,又没有merge.如果确定使用云端的代码,最方便的解决方法是删除本地修改,可以使用以下命令:</span><br><span class="line"></span><br><span class="line">git clean  -d  -fx &quot;&quot;</span><br><span class="line"></span><br><span class="line"># d  -----删除未被添加到git的路径中的文件</span><br><span class="line"># f  -----强制运行</span><br><span class="line"># x  -----删除忽略文件已经对git来说不识别的文件</span><br><span class="line"># 该命令会删除本地的修改,最好先备份再使用</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">admin@DESKTOP-99DVA5P MINGW64 /d/WEB/testtengxun/test (test)</span><br><span class="line">$ git checkout mast</span><br><span class="line">Switched to branch &#x27;master&#x27;</span><br><span class="line">Your branch is up to date with &#x27;origin/master&#x27;.</span><br><span class="line"></span><br><span class="line">admin@DESKTOP-99DVA5P MINGW64 /d/WEB/testtengxun/test (master)</span><br><span class="line">$ git pull origin master</span><br><span class="line">remote: Enumerating objects: 1, done.</span><br><span class="line">remote: Counting objects: 100% (1/1), done.</span><br><span class="line">remote: Total 1 (delta 0), reused 0 (delta 0)</span><br><span class="line">Unpacking objects: 100% (1/1), done.</span><br><span class="line">From https://git.dev.tencent.com/dtid_6cc354516de124fc/test</span><br><span class="line"> * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">   cb9d360..963cd38  master     -&gt; origin/master</span><br><span class="line">Updating cb9d360..963cd38</span><br><span class="line">Fast-forward</span><br><span class="line"> 1.py | 1 +</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/16/Go%E6%93%8D%E4%BD%9CUKey/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Git-global-setup"><span class="nav-number">1.</span> <span class="nav-text">Git global setup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Create-a-new-repository"><span class="nav-number">2.</span> <span class="nav-text">Create a new repository</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Existing-folder"><span class="nav-number">3.</span> <span class="nav-text">Existing folder</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Existing-Git-repository"><span class="nav-number">5.</span> <span class="nav-text">Existing Git repository</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#add%E6%97%B6%E6%8A%A5%E9%94%99"><span class="nav-number">6.</span> <span class="nav-text">add时报错</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Aqi</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/AI-AQI" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;AI-AQI" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Aqi</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
