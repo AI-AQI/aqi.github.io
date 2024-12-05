@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ai-aqi.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ai-aqi.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta property="og:type" content="website">
@@ -187,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-05 15:34:29" itemprop="dateModified" datetime="2024-12-05T15:34:29+08:00">2024-12-05</time>
+                <time title="修改时间：2024-12-05 17:38:23" itemprop="dateModified" datetime="2024-12-05T17:38:23+08:00">2024-12-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -210,33 +210,101 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="⭐启动mysql"><a href="#⭐启动mysql" class="headerlink" title="⭐启动mysql"></a>⭐启动mysql</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8.0.19</span><br></pre></td></tr></table></figure>
+          <h3 id="1-mysql镜像"><a href="#1-mysql镜像" class="headerlink" title="1. mysql镜像"></a>1. mysql镜像</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:<span class="number">8</span>.<span class="number">0</span>.<span class="number">19</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="⭐启动后端"><a href="#⭐启动后端" class="headerlink" title="⭐启动后端"></a>⭐启动后端</h3><h5 id="1-构建后端镜像"><a href="#1-构建后端镜像" class="headerlink" title="1. 构建后端镜像"></a>1. 构建后端镜像</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --network host -t go-api-compose . -f Dockerfile.compose</span><br></pre></td></tr></table></figure>
+<h3 id="2-后端镜像"><a href="#2-后端镜像" class="headerlink" title="2. 后端镜像"></a>2. 后端镜像</h3><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --network host -t go-api-compose . -f Dockerfile.compose</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">构建时文件目录：</span><br><span class="line">    ├── Dockerfile.compose  // 后端Dockerfile 使用docker-compose启动之前使用该dockerfile构建镜像</span><br><span class="line">    └── src  // 后端代码</span><br><span class="line">        ├── xxx</span><br><span class="line">        └── wait-for-it.sh  //  构建时会复制进镜像，用于等待并检验mysql是否可连接</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wait-for-it.sh</span><br><span class="line">https://github.com/vishnubob/wait-for-it</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">Dockerfile.compose：</span><br><span class="line">	FROM golang:alpine AS builder</span><br><span class="line">	</span><br><span class="line">	# 为我们的镜像设置必要的环境变量</span><br><span class="line">	ENV GO111MODULE=on \</span><br><span class="line">	    GOPROXY=https://goproxy.cn,direct \</span><br><span class="line">	    CGO_ENABLED=0 \</span><br><span class="line">	    GOOS=linux \</span><br><span class="line">	    GOARCH=amd64</span><br><span class="line">	</span><br><span class="line">	# 移动到工作目录：/build</span><br><span class="line">	WORKDIR /build</span><br><span class="line">	</span><br><span class="line">	# 将代码复制到容器中</span><br><span class="line">	COPY . .</span><br><span class="line">	</span><br><span class="line">	# 下载依赖信息</span><br><span class="line">	RUN go mod download</span><br><span class="line">	</span><br><span class="line">	# 将我们的代码编译成二进制可执行文件 app</span><br><span class="line">	RUN go build -o app .</span><br><span class="line">	</span><br><span class="line">	###################</span><br><span class="line">	# 接下来创建一个小镜像</span><br><span class="line">	###################</span><br><span class="line">	#FROM scratch</span><br><span class="line">	#FROM debian:stretch-slim</span><br><span class="line">	# FROM python:3.8-slim</span><br><span class="line">	FROM python:3</span><br><span class="line">	</span><br><span class="line">	COPY ./nvm_tool /nvm_tool</span><br><span class="line">	COPY ./wait-for-it.sh /</span><br><span class="line">	</span><br><span class="line">	# 从builder镜像中把/dist/app 拷贝到当前目录</span><br><span class="line">	COPY --from=builder /build/app /</span><br><span class="line">	</span><br><span class="line">	# apt-get换源</span><br><span class="line">	RUN touch /etc/apt/sources.list</span><br><span class="line">	RUN echo &quot;deb http://mirrors.ustc.edu.cn/kali kali main non-free contrib&quot; &gt; /etc/apt/sources.list</span><br><span class="line">	</span><br><span class="line">	# python3镜像是ubuntu 使用apt-get安装需要的包</span><br><span class="line">	RUN apt-get install libgomp1</span><br><span class="line">	</span><br><span class="line">	RUN chmod 755 wait-for-it.sh</span><br><span class="line">	</span><br><span class="line">	# 需要运行的命令，构建docker-compose使用的镜像时需要注释掉ENTRYPOINT，因为需要先用wait-for-it.sh检验mysql是否可连接</span><br><span class="line">	# ENTRYPOINT [&quot;/app&quot;, &quot;-c&quot;, &quot;/config.yaml&quot;]</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<p>文件目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">├── Dockerfile.compose  <span class="comment"># 后端Dockerfile 使用docker-compose启动之前使用该dockerfile构建镜像</span></span><br><span class="line">└── src  <span class="comment"># 后端代码</span></span><br><span class="line">    ├── xxx</span><br><span class="line">    └── wait-for-it.sh  <span class="comment"># 构建时会复制进镜像，用于等待并检验mysql是否可连接 https://github.com/vishnubob/wait-for-it</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/12/04/Docker-compose%E9%83%A8%E7%BD%B2go-vue%E9%A1%B9%E7%9B%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-<ol>
-<li>准备前端nginx配置  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">文件目录：</span><br><span class="line">    ├── nginx       // 前端nginx配置</span><br><span class="line">    └── conf.d</span><br><span class="line">        └── default.compose.conf</span><br></pre></td></tr></table></figure>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">default.compose.conf：</span><br><span class="line">	server &#123;</span><br><span class="line">	    listen       80;</span><br><span class="line">	    server_name  localhost;</span><br><span class="line">	</span><br><span class="line">	    access_log  /var/log/nginx/host.access.log  main;</span><br><span class="line">	    error_log  /var/log/nginx/error.log  error;</span><br><span class="line">	</span><br><span class="line">	    client_max_body_size 0;</span><br><span class="line">	</span><br><span class="line">	    location / &#123;</span><br><span class="line">	        root   /usr/share/nginx/html;</span><br><span class="line">	        index  index.html index.htm;</span><br><span class="line">	    &#125;</span><br><span class="line">	</span><br><span class="line">	    location /api &#123;</span><br><span class="line">	            rewrite  ^.+api/?(.*)$ /$1 break;</span><br><span class="line">	            proxy_pass http://api-compose:8778;</span><br><span class="line">	            proxy_redirect off;</span><br><span class="line">	            proxy_set_header Host $host;</span><br><span class="line">	            proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">	            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">	            proxy_send_timeout 3600;</span><br><span class="line">	            proxy_read_timeout 3600;</span><br><span class="line">	            proxy_connect_timeout 3600;</span><br><span class="line">	    &#125;</span><br><span class="line">	</span><br><span class="line">	    error_page 404 /404.html;</span><br><span class="line">	            location = /40x.html &#123;</span><br><span class="line">	    &#125;</span><br><span class="line">	    error_page 500 502 503 504 /50x.html;</span><br><span class="line">	            location = /50x.html &#123;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>2.4 启动</p>
-<pre><code>docker-compose up
-docker-compose stop
-docker-compose logs
-docker-compose ps
-docker-compose down
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">启动时文件目录：</span><br><span class="line">    ├── config.compose.yaml  // 后端config配置文件 此时go连接mysql配置为  ` root:root@tcp(mysql8019:3306)/test?charset=utf8&amp;parseTime=True&amp;loc=Local&amp;timeout=10s `</span><br><span class="line">    ├── docker-compose.yml   </span><br><span class="line">    ├── files     // 后端files挂载文件</span><br><span class="line">    ├── log       // 后端log挂载文件</span><br><span class="line">    ├── mysql_data        // mysql数据挂载文件，如果已有预制数据，使用docker cp mysql:/var/lib/mysql mysql_data命令导出已启动mysql容器的数据卷</span><br><span class="line">    └── web</span><br><span class="line">        ├── dist  // 前端打包</span><br><span class="line">        └── nginx       // 前端nginx配置</span><br><span class="line">            └── conf.d</span><br><span class="line">                └── default.compose.conf</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">docker-compose.yml：</span><br><span class="line">	# yaml 配置</span><br><span class="line">	version: &quot;3.3&quot;</span><br><span class="line">	services:</span><br><span class="line">	  mysql8019:</span><br><span class="line">	    image: &quot;mysql:8.0.19&quot;</span><br><span class="line">	    container_name: mysql8019</span><br><span class="line">	    ports:</span><br><span class="line">	      - &quot;3308:3306&quot;</span><br><span class="line">	    #command: &quot;--default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql&quot;</span><br><span class="line">	    environment:</span><br><span class="line">	      TZ: Asia/Shanghai</span><br><span class="line">	      MYSQL_ROOT_PASSWORD: &quot;root&quot;</span><br><span class="line">	      #MYSQL_DATABASE: &quot;nvm&quot;</span><br><span class="line">	    volumes:</span><br><span class="line">	      - ./mysql_data:/var/lib/mysql</span><br><span class="line">	  api-compose:</span><br><span class="line">	    image: &quot;go-api-compose:latest&quot;</span><br><span class="line">	    container_name: api-compose</span><br><span class="line">	    privileged: true</span><br><span class="line">	    #build: .</span><br><span class="line">	    command: [&quot;/wait-for-it.sh&quot;,&quot;mysql8019:3306&quot;,&quot;--&quot;,&quot;/app&quot;, &quot;-c&quot;, &quot;/config.yaml&quot;]</span><br><span class="line">	    depends_on:</span><br><span class="line">	      - mysql8019</span><br><span class="line">	    ports:</span><br><span class="line">	      - &quot;8778:8778&quot;</span><br><span class="line">	    volumes:</span><br><span class="line">	      - ./config.compose.yaml:/config.yaml</span><br><span class="line">	      - ./files:/files</span><br><span class="line">	      - ./log:/log</span><br><span class="line">	  nginx:</span><br><span class="line">	    image: nginx:latest</span><br><span class="line">	    container_name: web-compose</span><br><span class="line">	    ports:</span><br><span class="line">	      - &quot;8009:80&quot;</span><br><span class="line">	    volumes:</span><br><span class="line">	      - ./web/nginx/conf.d/default.compose.conf:/etc/nginx/conf.d/default.conf</span><br><span class="line">	      - ./web/dist:/usr/share/nginx/html</span><br><span class="line">	    depends_on:</span><br><span class="line">	      - api-compose</span><br></pre></td></tr></table></figure>
-ip:3308 访问mysql
-http://ip:8778 访问后端
-http://ip:8009 访问前端 
-http://ip:8009/api 访问后端
-</code></pre>
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://ai-aqi.github.io/2024/12/04/Go%E6%93%8D%E4%BD%9CUKey/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Aqi">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Aqi's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/04/Go%E6%93%8D%E4%BD%9CUKey/" class="post-title-link" itemprop="url">Go操作UKEY</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-12-04 17:43:30" itemprop="dateCreated datePublished" datetime="2024-12-04T17:43:30+08:00">2024-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-12-05 17:40:46" itemprop="dateModified" datetime="2024-12-05T17:40:46+08:00">2024-12-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%A5%E4%BD%9C%E6%8A%80%E6%9C%AF%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">工作技术记录</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-相关文档"><a href="#1-相关文档" class="headerlink" title="1. 相关文档"></a>1. 相关文档</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/12/04/Go%E6%93%8D%E4%BD%9CUKey/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -332,148 +400,6 @@ http://ip:8009/api 访问后端
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ai-aqi.github.io/2024/08/16/Go%E6%93%8D%E4%BD%9CUKey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aqi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Aqi's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/08/16/Go%E6%93%8D%E4%BD%9CUKey/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-08-16 17:17:26" itemprop="dateCreated datePublished" datetime="2024-08-16T17:17:26+08:00">2024-08-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-04 16:36:11" itemprop="dateModified" datetime="2024-12-04T16:36:11+08:00">2024-12-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-相关文档"><a href="#1-相关文档" class="headerlink" title="1. 相关文档"></a>1. 相关文档</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/16/Go%E6%93%8D%E4%BD%9CUKey/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://ai-aqi.github.io/2024/08/16/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Aqi">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Aqi's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/08/16/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-08-16 17:16:49" itemprop="dateCreated datePublished" datetime="2024-08-16T17:16:49+08:00">2024-08-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://ai-aqi.github.io/2024/08/16/Docker%E9%83%A8%E7%BD%B2go-vue%E9%A1%B9%E7%9B%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -505,7 +431,7 @@ http://ip:8009/api 访问后端
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-04 16:01:38" itemprop="dateModified" datetime="2024-12-04T16:01:38+08:00">2024-12-04</time>
+                <time title="修改时间：2024-12-05 17:38:30" itemprop="dateModified" datetime="2024-12-05T17:38:30+08:00">2024-12-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -528,13 +454,7 @@ http://ip:8009/api 访问后端
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="⭐启动mysql"><a href="#⭐启动mysql" class="headerlink" title="⭐启动mysql"></a>⭐启动mysql</h3><h5 id="1-拉取镜像"><a href="#1-拉取镜像" class="headerlink" title="1. 拉取镜像"></a>1. 拉取镜像</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8.0.19 </span><br></pre></td></tr></table></figure>
-
-<h5 id="2-启动"><a href="#2-启动" class="headerlink" title="2. 启动"></a>2. 启动</h5><ol>
-<li>后台运行mysql，并挂载mysql数据</li>
-<li>如遇到权限错误增加 <code>--privileged=true</code></li>
-</ol>
-<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -p <span class="number">3307</span>:<span class="number">3306</span> --name mysql -v /mysql_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:<span class="number">8</span>.<span class="number">0</span>.<span class="number">19</span></span><br><span class="line"></span><br><span class="line"># -p <span class="number">3307</span>:<span class="number">3306</span>	表示宿主机开放的mysql端口为<span class="number">3307</span>，容器内mysql端口为<span class="number">3306</span></span><br></pre></td></tr></table></figure>
+          <h3 id="⭐启动mysql"><a href="#⭐启动mysql" class="headerlink" title="⭐启动mysql"></a>⭐启动mysql</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8.0.19</span><br><span class="line"></span><br><span class="line">docker run -p 3307:3306 --name mysql -v /mysql_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0.19</span><br><span class="line"></span><br><span class="line"># -p 3307:3306	表示宿主机开放的mysql端口为3307，容器内mysql端口为3306</span><br><span class="line"># 如遇到权限错误增加 --privileged=true</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2024/08/16/Docker%E9%83%A8%E7%BD%B2go-vue%E9%A1%B9%E7%9B%AE/#more" rel="contents">
@@ -592,7 +512,7 @@ http://ip:8009/api 访问后端
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-12-04 15:47:23" itemprop="dateModified" datetime="2024-12-04T15:47:23+08:00">2024-12-04</time>
+                <time title="修改时间：2024-12-05 17:39:48" itemprop="dateModified" datetime="2024-12-05T17:39:48+08:00">2024-12-05</time>
               </span>
 
           
@@ -606,14 +526,10 @@ http://ip:8009/api 访问后端
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="⭐搭建博客"><a href="#⭐搭建博客" class="headerlink" title="⭐搭建博客"></a>⭐搭建博客</h3><h4 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h4><ol>
-<li>远程仓库并增加hexo分支</li>
-</ol>
+          <h3 id="⭐搭建博客"><a href="#⭐搭建博客" class="headerlink" title="⭐搭建博客"></a>⭐搭建博客</h3><h4 id="1-创建仓库"><a href="#1-创建仓库" class="headerlink" title="1. 创建仓库"></a>1. 创建仓库</h4><p>远程仓库并增加hexo分支</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GithubUsername.github.io  // 仓库名称第一部分用github的用户名，后面固定为github.io</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>创建本地仓库</li>
-</ol>
+<p>创建本地仓库</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir GithubUsername.github.io</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
@@ -703,7 +619,7 @@ http://ip:8009/api 访问后端
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -716,7 +632,7 @@ http://ip:8009/api 访问后端
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
