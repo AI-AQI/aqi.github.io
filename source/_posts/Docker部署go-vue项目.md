@@ -10,28 +10,20 @@ categories:
 
 ### ⭐启动mysql
 
-##### 1. 拉取镜像 
-
 ```
-docker pull mysql:8.0.19 
-```
+docker pull mysql:8.0.19
 
-##### 2. 启动
-
-1. 后台运行mysql，并挂载mysql数据
-2. 如遇到权限错误增加 `--privileged=true`
-
-```cmd
 docker run -p 3307:3306 --name mysql -v /mysql_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0.19
 
 # -p 3307:3306	表示宿主机开放的mysql端口为3307，容器内mysql端口为3306
+# 如遇到权限错误增加 --privileged=true
 ```
 
 <!--more-->
 
 ### ⭐启动后端
 
-##### 1. 构建镜像
+#### 1. 构建镜像
 
 ```cmd
 docker build --network host -t go-api .  # 镜像名称为go-api
@@ -43,7 +35,7 @@ docker build --network host -t go-api .  # 镜像名称为go-api
    └── src  # 所有后端代码
        └── xxx
 ```
-##### 2. Dockerfile
+Dockerfile
 
 ```Dockerfile
 FROM golang:alpine AS builder
@@ -95,9 +87,9 @@ ENTRYPOINT ["/app", "-c", "/config.yaml"]
 
 ```
 
-##### 3. 启动
+#### 3. 启动
 
-1. 后台启动后端，并关联mysql
+后台启动后端，并关联mysql
 
 ```cmd
 docker run -d -p 8777:8777 --link=mysql --privileged -v ./config.yaml:/config.yaml -v./files:/files --name goapp go-api
@@ -108,21 +100,21 @@ docker run -d -p 8777:8777 --link=mysql --privileged -v ./config.yaml:/config.ya
 # -v        	挂载数据卷，容器中操作数据卷，宿主机的数据卷也会变更 
 ```
 
-2. go连接mysql
+go连接mysql
 
-```go
+```
 gdb, err := gorm.Open("mysql", "root:root@tcp(mysql:3306)/test?charset=utf8&parseTime=True&loc=Local&timeout=10s")
 ```
 
-### ⭐启动前端
+###  ⭐启动前端
 
-##### 1. 构建镜像
+#### 1. 构建镜像
 
 ```cmd
 docker build -t vue-web .  # 镜像名称为vue-web
 ```
 
-##### 2. nginx启动前端，关联后端
+#### 2. nginx启动前端，关联后端
 
 ```cmd
 docker run -d -p 8008:80 --link goapp:goapp --name web vue-web
@@ -136,7 +128,7 @@ docker run -d -p 8008:80 --link goapp:goapp --name web vue-web
     └── conf.d
         └── default.compose.conf
 ```
-##### 3. Dockerfile
+Dockerfile
 
 ```dockerfile
 FROM nginx
@@ -144,7 +136,7 @@ FROM nginx
 COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY dist/ /usr/share/nginx/html
 ```
-##### 4. default.compose.conf
+default.compose.conf
 
 ```nginx
 server {

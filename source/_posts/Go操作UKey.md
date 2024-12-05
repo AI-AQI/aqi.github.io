@@ -1,3 +1,13 @@
+---
+title: Go操作UKEY
+date: 2024-12-04 17:43:30
+tags:
+- go
+- 后端
+categories:
+- 工作技术记录
+---
+
 ## 1. 相关文档
 
 <!--more-->

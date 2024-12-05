@@ -6,26 +6,26 @@ tags: 博客
 
 ### ⭐搭建博客
 
-#### 创建仓库
+#### 1. 创建仓库
 
-1. 远程仓库并增加hexo分支
+远程仓库并增加hexo分支
 
 ```
 GithubUsername.github.io  // 仓库名称第一部分用github的用户名，后面固定为github.io
 ```
 
-2. 创建本地仓库
+创建本地仓库
 
 ```
 mkdir GithubUsername.github.io
 ```
 <!--more-->
 
-#### 本地仓库初始化
+#### 2. 本地仓库初始化
 
-1. hexo文档：https://hexo.io/zh-cn/docs/
+hexo文档：https://hexo.io/zh-cn/docs/
 
-2. 具体步骤：
+具体步骤：
 
 ```
 npm install hexo-cli -g
@@ -49,7 +49,7 @@ npm install hexo-deployer-git --save
 `--_config.yml
 ```
 
-#### 修改本地_config.yml
+#### 3. 修改本地_config.yml
 
 ```yaml
 # 这部分是网站基础信息
@@ -72,16 +72,16 @@ deploy:
   branch: master
 ```
 
-#### 本地代码同步远程
+#### 4. 本地代码同步远程
 
-1. 连接本地仓库和远程仓库
+连接本地仓库和远程仓库
 
 ```cmd
 git init
 git remote add origin git@github.com:xxx/xxx.github.io.git
 ```
 
-2. 上传代码
+上传代码
 
 ```cmd
 git add --all
@@ -89,7 +89,7 @@ git commit -m "update"
 git push origin hexo
 ```
 
-#### 远程仓库配置
+#### 5. 远程仓库配置
 
 1. `Settings` -> `General`  配置`hexo`为默认分支
 
@@ -97,7 +97,7 @@ git push origin hexo
 
 3. `Settings` -> `Pages` -> `Build and deployment` -> `Branch` 配置为`master`
 
-#### 部署
+#### 6. 部署
 
 ```
 hexo s 		// 本地启动（调试用）
@@ -114,29 +114,27 @@ hexo d 		// 部署到github
 
 ### ⭐更新博客
 
-#### 新建文章
+#### 1. 新建文章
 
-1. 新增文章（文章默认都在`source/_posts`目录下）
+新增文章（文章默认都在`source/_posts`目录下）
 
 ```
 hexo new [layout] <title>
 ```
 
-2. 文章开头内容为
+文章开头内容为
 
 ```sh
--------------
-
+---
 title: Github和Hexo搭建博客
 date: 2024-08-08 16:21:17
 tags: 博客
-
--------------
+---
 ```
 
-#### 更新
+#### 2. 更新
 
-1. 手动更新
+##### 2.1 手动更新
 
 ```
 git add --all
@@ -146,7 +144,7 @@ hexo clean
 hexo g -d
 ```
 
-2. shell文件一键更新
+##### 2.2 shell文件一键更新
 
 ```sh
 # 写一个shell文件
@@ -175,11 +173,11 @@ chmod +x deploy.sh
 
 ### ⭐丰富博客
 
-#### 更换主题
+#### 1. 更换主题
 
-1. 选择主题：https://hexo.io/themes/index.html 
+选择主题：https://hexo.io/themes/index.html 
 
-2. 配置主题
+配置主题
 
 ```sh
 # 在根目录下 拉取主题代码到theme文件夹
@@ -193,24 +191,22 @@ theme: next
 -------------
 ```
 
-3. 其他主题配置项可以在`themes/next/_config.yml`里自定义
+其他主题配置项可以在`themes/next/_config.yml`里自定义
 
-#### 新建分类/标签
+#### 2. 新建分类/标签
 
-1. 新建分类/标签页面
+新建分类/标签页面
 
 ```sh
 # 新建分类页
 hexo new page categories
 
 # 根据返回提示打开source/categories/index.md 增加：
--------------
-
+---
 title: categories
 date: 2024-08-09 10:51:27
 type: "categories" 
-
--------------
+---
 ```
 
 ```sh
@@ -218,16 +214,14 @@ type: "categories"
 hexo new page tags
 
 # 根据返回提示打开source/tags/index.md 增加：
--------------
-
+---
 title: tags
 date: 2024-08-09 10:51:34
 type: "tags"
-
--------------
+---
 ```
 
-2. 配置路径
+配置路径
 
 ```sh
 # 编辑next主题下的_config.yml文件
@@ -248,33 +242,31 @@ menu:
 -------------
 ```
 
-3. 给文章设置分类/标签
+给文章设置分类/标签
 
 ```sh
 # 在文章开头增加tags/categories
--------------
-
+---
 title: Github和Hexo搭建博客
 date: 2024-08-08 16:21:17
 tags: 标签1
 categories: 分类1
-
--------------
+---
 ```
 
-#### 文章内容
+#### 3. 文章内容
 
-##### 1. “阅读全文”按钮
+##### 3.1 “阅读全文”按钮
 
 在文章内增加`<!--more-->`
 
-##### 2. 文章中添加图片
+##### 3.2 文章中添加图片
 
 ###### 全局资源
 
-1. source目录下新建images目录，图片放到images文件夹中
+source目录下新建images目录，图片放到images文件夹中
 
-2. 文章中使用图片格式为`![1723794212487](/images/1723794212487.png)`  
+文章中使用图片格式为`![1723794212487](/images/1723794212487.png)`  
 
 ###### 文章资源
 
